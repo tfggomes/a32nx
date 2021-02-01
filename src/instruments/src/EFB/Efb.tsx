@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from "react";
+import React from 'react';
 
 import { getSimbriefData, IFuel, IWeights } from './SimbriefApi';
-import StatusBar from "./StatusBar/StatusBar";
-import ToolBar from "./ToolBar/ToolBar";
-import Dashboard from "./Dashboard/Dashboard";
-import Dispatch from "./Dispatch/Dispatch";
+import StatusBar from './StatusBar/StatusBar';
+import ToolBar from './ToolBar/ToolBar';
+import Dashboard from './Dashboard/Dashboard';
+import Dispatch from './Dispatch/Dispatch';
 import Ground from './Ground/Ground';
-import Company from "./Company/Company";
-import Settings from "./Settings/Settings";
+import Company from './Company/Company';
+import Settings from './Settings/Settings';
 
 type EfbProps = {
     currentFlight: string
@@ -72,6 +72,7 @@ class Efb extends React.Component<EfbProps, EfbState> {
         this.fetchSimbriefData = this.fetchSimbriefData.bind(this);
     }
 
+    // eslint-disable-next-line react/state-in-constructor
     state: EfbState = {
         currentPageIndex: 0,
         airline: '---',
@@ -85,9 +86,10 @@ class Efb extends React.Component<EfbProps, EfbState> {
         flightDistance: '---NM',
         route: '---------------------',
         flightETAInSeconds: 'N/A',
+        // eslint-disable-next-line react/no-unused-state
         currentTime: new Date(),
         initTime: new Date(),
-        timeSinceStart: "00:00",
+        timeSinceStart: '00:00',
         weights: {
             cargo: 0,
             estLandingWeight: 0,
@@ -114,9 +116,9 @@ class Efb extends React.Component<EfbProps, EfbState> {
             reserve: 0,
             taxi: 0,
         },
-        units: "kgs",
-        altIcao: "----",
-        altIata: "---",
+        units: 'kgs',
+        altIcao: '----',
+        altIata: '---',
         altBurn: 0,
         tripTime: 0,
         contFuelTime: 0,
@@ -124,24 +126,12 @@ class Efb extends React.Component<EfbProps, EfbState> {
         taxiOutTime: 0,
         schedIn: '--:--',
         schedOut: '--:--',
-        loadsheet: "N/A",
+        loadsheet: 'N/A',
     }
 
-    updateCurrentTime(currentTime: Date) {
-        this.setState({currentTime: currentTime});
-    }
-
-    updateTimeSinceStart(timeSinceStart: string) {
-        this.setState({timeSinceStart: timeSinceStart});
-    }
-
-    fetchSimbriefUsername() {
-        const username = window.localStorage.getItem("SimbriefUsername");
-        if (username === null) {
-            return '';
-        } else {
-            return username;
-        }
+    changeSimbriefUsername = (name: string) => {
+        this.setState({ simbriefUsername: name });
+        window.localStorage.setItem('SimbriefUsername', name);
     }
 
     async fetchSimbriefData() {
@@ -149,82 +139,95 @@ class Efb extends React.Component<EfbProps, EfbState> {
             return;
         }
 
-        console.log("Fetching simbriefData");
+        console.log('Fetching simbriefData');
+        // eslint-disable-next-line react/no-access-state-in-setstate
         const simbriefData = await getSimbriefData(this.state.simbriefUsername);
         console.info(simbriefData);
         this.setState({
-            airline:             simbriefData.airline,
-            flightNum:           simbriefData.flightNumber,
-            departingAirport:    simbriefData.origin.icao,
-            departingIata:       simbriefData.origin.iata,
-            arrivingAirport:     simbriefData.destination.icao,
-            arrivingIata:        simbriefData.destination.iata,
-            aircraftReg:         simbriefData.aircraftReg,
-            flightDistance:      simbriefData.distance,
-            flightETAInSeconds:  simbriefData.flightETAInSeconds,
-            route:               simbriefData.route,
+            airline: simbriefData.airline,
+            flightNum: simbriefData.flightNumber,
+            departingAirport: simbriefData.origin.icao,
+            departingIata: simbriefData.origin.iata,
+            arrivingAirport: simbriefData.destination.icao,
+            arrivingIata: simbriefData.destination.iata,
+            aircraftReg: simbriefData.aircraftReg,
+            flightDistance: simbriefData.distance,
+            flightETAInSeconds: simbriefData.flightETAInSeconds,
+            route: simbriefData.route,
             weights: {
-                cargo:              simbriefData.weights.cargo,
-                estLandingWeight:   simbriefData.weights.estLandingWeight,
-                estTakeOffWeight:   simbriefData.weights.estTakeOffWeight,
-                estZeroFuelWeight:  simbriefData.weights.estZeroFuelWeight,
-                maxLandingWeight:   simbriefData.weights.maxLandingWeight,
-                maxTakeOffWeight:   simbriefData.weights.maxTakeOffWeight,
-                maxZeroFuelWeight:  simbriefData.weights.maxZeroFuelWeight,
-                passengerCount:     simbriefData.weights.passengerCount,
-                passengerWeight:    simbriefData.weights.passengerWeight,
-                payload:            simbriefData.weights.payload,
+                cargo: simbriefData.weights.cargo,
+                estLandingWeight: simbriefData.weights.estLandingWeight,
+                estTakeOffWeight: simbriefData.weights.estTakeOffWeight,
+                estZeroFuelWeight: simbriefData.weights.estZeroFuelWeight,
+                maxLandingWeight: simbriefData.weights.maxLandingWeight,
+                maxTakeOffWeight: simbriefData.weights.maxTakeOffWeight,
+                maxZeroFuelWeight: simbriefData.weights.maxZeroFuelWeight,
+                passengerCount: simbriefData.weights.passengerCount,
+                passengerWeight: simbriefData.weights.passengerWeight,
+                payload: simbriefData.weights.payload,
             },
             fuels: {
-                avgFuelFlow:     simbriefData.fuel.avgFuelFlow,
-                contingency:     simbriefData.fuel.contingency,
-                enrouteBurn:     simbriefData.fuel.enrouteBurn,
-                etops:           simbriefData.fuel.etops,
-                extra:           simbriefData.fuel.extra,
-                maxTanks:        simbriefData.fuel.maxTanks,
-                minTakeOff:      simbriefData.fuel.minTakeOff,
-                planLanding:     simbriefData.fuel.planLanding,
-                planRamp:        simbriefData.fuel.planRamp,
-                planTakeOff:     simbriefData.fuel.planTakeOff,
-                reserve:         simbriefData.fuel.reserve,
-                taxi:            simbriefData.fuel.taxi,
+                avgFuelFlow: simbriefData.fuel.avgFuelFlow,
+                contingency: simbriefData.fuel.contingency,
+                enrouteBurn: simbriefData.fuel.enrouteBurn,
+                etops: simbriefData.fuel.etops,
+                extra: simbriefData.fuel.extra,
+                maxTanks: simbriefData.fuel.maxTanks,
+                minTakeOff: simbriefData.fuel.minTakeOff,
+                planLanding: simbriefData.fuel.planLanding,
+                planRamp: simbriefData.fuel.planRamp,
+                planTakeOff: simbriefData.fuel.planTakeOff,
+                reserve: simbriefData.fuel.reserve,
+                taxi: simbriefData.fuel.taxi,
             },
-            units:              simbriefData.units,
-            altIcao:            simbriefData.alternate.icao,
-            altIata:            simbriefData.alternate.iata,
-            altBurn:            simbriefData.alternate.burn,
-            tripTime:           simbriefData.times.est_time_enroute,
-            contFuelTime:       simbriefData.times.contfuel_time,
-            resFuelTime:        simbriefData.times.reserve_time,
-            taxiOutTime:        simbriefData.times.taxi_out,
-            schedOut:           simbriefData.times.sched_out,
-            schedIn:            simbriefData.times.sched_in,
-            loadsheet:          simbriefData.text,
+            units: simbriefData.units,
+            altIcao: simbriefData.alternate.icao,
+            altIata: simbriefData.alternate.iata,
+            altBurn: simbriefData.alternate.burn,
+            tripTime: simbriefData.times.est_time_enroute,
+            contFuelTime: simbriefData.times.contfuel_time,
+            resFuelTime: simbriefData.times.reserve_time,
+            taxiOutTime: simbriefData.times.taxi_out,
+            schedOut: simbriefData.times.sched_out,
+            schedIn: simbriefData.times.sched_in,
+            loadsheet: simbriefData.text,
         });
     }
 
-    changeSimbriefUsername = (name: string) => {
-        this.setState({ simbriefUsername: name });
-        window.localStorage.setItem("SimbriefUsername", name);
+    fetchSimbriefUsername() {
+        const username = window.localStorage.getItem('SimbriefUsername');
+        if (username === null) {
+            return '';
+        }
+        return username;
+    }
+
+    updateTimeSinceStart(timeSinceStart: string) {
+        this.setState({ timeSinceStart });
+    }
+
+    updateCurrentTime(currentTime: Date) {
+        // eslint-disable-next-line react/no-unused-state
+        this.setState({ currentTime });
     }
 
     currentPage() {
-
         let schedInParsed = '--:--';
         let schedOutParsed = '--:--';
 
         if (this.state.schedIn !== '--:--') {
             const sta = new Date(parseInt(this.state.schedIn) * 1000);
-            schedInParsed = sta.getUTCHours().toString().padStart(2, '0') + ":" + sta.getUTCMinutes().toString().padStart(2, '0') + "z"
+            schedInParsed = `${sta.getUTCHours().toString().padStart(2, '0')}:${sta.getUTCMinutes().toString().padStart(2, '0')}z`;
         }
         if (this.state.schedOut !== '--:--') {
             const std = new Date(parseInt(this.state.schedOut) * 1000);
-            schedOutParsed = std.getUTCHours().toString().padStart(2, '0') + ":" + std.getUTCMinutes().toString().padStart(2, '0') + "z"
+            schedOutParsed = `${std.getUTCHours().toString().padStart(2, '0')}:${std.getUTCMinutes().toString().padStart(2, '0')}z`;
         }
 
         switch (this.state.currentPageIndex) {
-            case 1:
-                return <Dispatch
+        case 1:
+            return (
+                <Dispatch
                     loadsheet={this.state.loadsheet}
                     weights={this.state.weights}
                     fuels={this.state.fuels}
@@ -240,27 +243,29 @@ class Efb extends React.Component<EfbProps, EfbState> {
                     contFuelTime={this.state.contFuelTime}
                     resFuelTime={this.state.resFuelTime}
                     taxiOutTime={this.state.taxiOutTime}
-                />;
-            case 2:
-                return (
-                    <div className="w-full h-full">
-                        <p className="text-white font-medium mt-6 ml-4 text-3xl">Inop.</p>
-                    </div>
-                );
-            case 3:
-                return (
-                    <div className="w-full h-full">
-                        <p className="text-white font-medium mt-6 ml-4 text-3xl">Inop.</p>
-                    </div>
-                );
-            case 4:
-                return <Company simbriefUsername={this.state.simbriefUsername} changeSimbriefUsername={this.changeSimbriefUsername} />;
-            case 5:
-                return <Ground />;
-            case 6:
-                return <Settings />;
-            default:
-                return <Dashboard
+                />
+            );
+        case 2:
+            return (
+                <div className="w-full h-full">
+                    <p className="text-white font-medium mt-6 ml-4 text-3xl">Inop.</p>
+                </div>
+            );
+        case 3:
+            return (
+                <div className="w-full h-full">
+                    <p className="text-white font-medium mt-6 ml-4 text-3xl">Inop.</p>
+                </div>
+            );
+        case 4:
+            return <Company simbriefUsername={this.state.simbriefUsername} changeSimbriefUsername={this.changeSimbriefUsername} />;
+        case 5:
+            return <Ground />;
+        case 6:
+            return <Settings />;
+        default:
+            return (
+                <Dashboard
                     fetchSimbrief={this.fetchSimbriefData}
                     currentFlight={this.props.currentFlight}
                     airline={this.state.airline}
@@ -276,7 +281,8 @@ class Efb extends React.Component<EfbProps, EfbState> {
                     arrIata={this.state.arrivingIata}
                     schedIn={schedInParsed}
                     schedOut={schedOutParsed}
-                />;
+                />
+            );
         }
     }
 

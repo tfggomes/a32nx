@@ -17,9 +17,9 @@
  */
 
 import React from 'react';
-import FlightWidget from "./Widgets/FlightWidget";
-import WeatherWidget from "./Widgets/WeatherWidget";
-import Map from "@flybywiresim/map";
+import Map from '@flybywiresim/map';
+import FlightWidget from './Widgets/FlightWidget';
+import WeatherWidget from './Widgets/WeatherWidget';
 
 type DashboardProps = {
     currentFlight: string,
@@ -42,11 +42,10 @@ type DashboardProps = {
 type DashboardState = {}
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
-
     calculateFlightTime(flightETAInSeconds: string): string {
         const timeInMinutes: number = parseInt(flightETAInSeconds) * 0.0166;
-        if (timeInMinutes.toString() === "NaN") {
-            return "00:00";
+        if (timeInMinutes.toString() === 'NaN') {
+            return '00:00';
         }
 
         const hours = (timeInMinutes / 60);
@@ -54,14 +53,14 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         const minutes = (hours - roundedHours) * 60;
         const roundedMinutes = Math.round(minutes);
 
-        return (roundedHours <= 9 ? "0" : "") + roundedHours + ":" + (roundedMinutes <= 9 ? "0" : "") + roundedMinutes;
+        return `${(roundedHours <= 9 ? '0' : '') + roundedHours}:${roundedMinutes <= 9 ? '0' : ''}${roundedMinutes}`;
     }
 
     render() {
         return (
             <div className="flex p-6 w-full">
                 <div className="w-4/12 mr-4">
-                    <h1 className="text-white font-medium mb-4 text-2xl">Today's Flight</h1>
+                    <h1 className="text-white font-medium mb-4 text-2xl">Today&apos;s Flight</h1>
 
                     <FlightWidget
                         name="todays"
@@ -78,21 +77,22 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                         timeSinceStart={this.props.timeSinceStart}
                         sta={this.props.schedIn}
                         std={this.props.schedOut}
-                        fetchSimbrief={this.props.fetchSimbrief} />
+                        fetchSimbrief={this.props.fetchSimbrief}
+                    />
                 </div>
 
                 <div className="w-3/12">
                     <h1 className="text-white font-medium mb-4 text-2xl">Weather</h1>
 
-                    <WeatherWidget name='origin' editIcao="yes" icao={this.props.departingAirport} />
-                    <WeatherWidget name='dest' editIcao="yes" icao={this.props.arrivingAirport} />
+                    <WeatherWidget name="origin" editIcao="yes" icao={this.props.departingAirport} />
+                    <WeatherWidget name="dest" editIcao="yes" icao={this.props.arrivingAirport} />
                 </div>
 
                 <div className="w-5/12 ml-4">
                     <h1 className="text-white font-medium mb-4 text-2xl">Map</h1>
 
                     <div className="w-full h-map rounded-lg overflow-hidden">
-                        <Map currentFlight={this.props.currentFlight} disableMenu={true} hideOthers={true} />
+                        <Map currentFlight={this.props.currentFlight} disableMenu hideOthers />
                     </div>
                 </div>
             </div>
