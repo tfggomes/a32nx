@@ -10,38 +10,51 @@ type MenuProps = {
     setPage: any
 }
 
-const SelectItem = (value: string, color: string = "white",) => {
+const SelectItem = (value: string, color: string = "white") => {
     return(
         <>
             <Label/>
-            <Input value={value} color={color}/>
+            <Input value={value.toUpperCase()} color={color}/>
         </>
     )
 
 }
 
 const MenuPage: React.FC<MenuProps> = ({setPage}) => {
-    const [l1, setl1] = useState("FMGC");
-    const [l2, setl2] = useState("ATSU");
-    const [l3, setl3] = useState("AIDS");
-    const [l4, setl5] = useState("CFDS");
-    const [r6, setr6] = useState("Return");
+    const [activeSys, setActiveSys] = useState("FMGC");
+    // Set to empty string as their set by the activeSys dependency
+    const [FMGCColor, setFMGCColor] = useState("");
+    const [ATSUColor, setATSUColor] = useState("");
+    const [AIDSColor, setAIDSColor] = useState("");
+    const [CFDSColor, setCFDSColor] = useState("");
     const [, , , setTitle] = useContext(RootContext);
+
+    useInteractionEvent("A32NX_MCDU_L_L1_BUTTON_PRESSED", () => setActiveSys("FMGC"));
+    useInteractionEvent("A32NX_MCDU_L_L2_BUTTON_PRESSED", () => setActiveSys("ATSU"));
+    useInteractionEvent("A32NX_MCDU_L_L3_BUTTON_PRESSED", () => setActiveSys("AIDS"));
+    useInteractionEvent("A32NX_MCDU_L_L4_BUTTON_PRESSED", () => setActiveSys("CFDS"));
 
     useEffect(() => {
         setTitle("MCDU MENU")
     }, []);
 
+    useEffect(() => {
+        setFMGCColor(activeSys === "FMGC" ? "green" : "white");
+        setATSUColor(activeSys === "ATSU" ? "green" : "white");
+        setAIDSColor(activeSys === "AIDS" ? "green" : "white");
+        setCFDSColor(activeSys === "CFDS" ? "green" : "white");
+    }, [activeSys]);
+
     return (
         <div className="menu-contents" >
             <Column
                 side={column_sides.Left}
-                line1={SelectItem(l1)}
-                line2={SelectItem(l2)}
-                line3={SelectItem(l3)}
-                line4={SelectItem(l4)}
+                line1={SelectItem("<FMGC (REQ)", FMGCColor)}
+                line2={SelectItem("<ATSU", ATSUColor)}
+                line3={SelectItem("<AIDS", AIDSColor)}
+                line4={SelectItem("<CFDS", CFDSColor)}
             />
-            <Column side={column_sides.Right} line6={SelectItem(r6)}/>
+            <Column side={column_sides.Right} line5={SelectItem("OPTIONS>")} line6={SelectItem("RETURN>")}/>
         </div>
     )
 }

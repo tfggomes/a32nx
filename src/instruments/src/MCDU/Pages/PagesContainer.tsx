@@ -27,14 +27,8 @@ const PagesContainer = () => {
         MENU: <MenuPage setPage={setCurrentPage}/>,
     };
 
-    useInteractionEvent("A32NX_MCDU_L_INIT_BUTTON_PRESSED", () => {
-        console.log("INIT BUTTON PRESSED")
-        setCurrentPage('INIT')
-    });
-    useInteractionEvent("A32NX_MCDU_L_MENU_BUTTON_PRESSED", () => {
-        console.log("MENU BUTTON PRESSED")
-        setCurrentPage('MENU')
-    });
+    useInteractionEvent("A32NX_MCDU_L_INIT_BUTTON_PRESSED", () => setCurrentPage('INIT'));
+    useInteractionEvent("A32NX_MCDU_L_MENU_BUTTON_PRESSED", () => setCurrentPage('MENU'));
 
     return pages[currentPage];
 };
