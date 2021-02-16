@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { useState } from 'react';
-import { MenuPage } from './FMGC/Menu.jsx';
 import { FuelPredPage } from './FMGC/FuelPred.jsx';
 import { useInteractionEvent } from '../../util.mjs';
 
@@ -24,7 +23,6 @@ const PagesContainer = () => {
     const [currentPage, setCurrentPage] = useState('MENU');
     const pages = {
         FUEL: <FuelPredPage />,
-        MENU: <MenuPage />,
     };
 
     useInteractionEvent('H:A32NX_MCDU_1_BTN_FUEL', () => setCurrentPage('FUEL'));
