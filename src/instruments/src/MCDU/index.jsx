@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 import {
     renderTarget,
     useUpdate,
