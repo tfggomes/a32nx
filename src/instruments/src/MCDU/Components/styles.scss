@@ -18,8 +18,6 @@
   justify-items: stretch;
   align-content: stretch;
 
-  margin-top: 10px;
-
   width: 100%;
   height: 100%;
 }
@@ -44,6 +42,13 @@ label {
 }
 
 p {
+  font-family: "ECAMFontRegular" !important;
+  color: var(--mcduWhite);
+  font-size: 5.8vw;
+  letter-spacing: normal;
+}
+
+input {
   font-family: "ECAMFontRegular" !important;
   color: var(--mcduWhite);
   font-size: 5.8vw;

@@ -15,17 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { useState } from 'react';
-import { FuelPredPage } from './FMGC/FuelPred.jsx';
-import { useInteractionEvent } from '../../util.mjs';
+import React, { useState } from 'react';
+import { InitPage } from './FMGC/Init.jsx';
+import MenuPage from './FMGC/Menu/Menu';
+import { useInteractionEvent } from "../../Common/hooks";
 
 const PagesContainer = () => {
     const [currentPage, setCurrentPage] = useState('MENU');
     const pages = {
-        FUEL: <FuelPredPage />,
+        INIT: <InitPage />,
+        MENU: <MenuPage setPage={setCurrentPage}/>,
     };
 
-    useInteractionEvent('H:A32NX_MCDU_1_BTN_FUEL', () => setCurrentPage('FUEL'));
+    useInteractionEvent("A32NX_MCDU_L_INIT_BUTTON_PRESSED", () => {
+        console.log("INIT BUTTON PRESSED")
+        setCurrentPage('INIT')
+    });
+    useInteractionEvent("A32NX_MCDU_L_MENU_BUTTON_PRESSED", () => {
+        console.log("MENU BUTTON PRESSED")
+        setCurrentPage('MENU')
+    });
 
     return pages[currentPage];
 };

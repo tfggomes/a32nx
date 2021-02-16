@@ -7,10 +7,9 @@ import {
 } from '../util.mjs';
 import './styles.scss';
 import Titlebar from './Titlebar/Titlebar.jsx';
-import PagesContainer from './Pages/PagesContainer.jsx';
+import PagesContainer from './Pages/PagesContainer.tsx';
 import Scratchpad from './Scratchpad/Scratchpad.jsx';
 import { RootContext } from './RootContext.jsx';
-import MenuPage from './Pages/FMGC/Menu/Menu.tsx';
 
 // TODO: Move anything dependent on ac power change to A32NX_Core
 function powerAvailable() {
@@ -42,7 +41,7 @@ function Idle() {
             <RootContext.Provider value={[scratchpad, setScratchpad, title, setTitle]}>
                 <div className="mcdu-inner">
                     <Titlebar />
-                    <MenuPage />
+                    <PagesContainer />
                     <Scratchpad />
                 </div>
             </RootContext.Provider>

@@ -1,22 +1,22 @@
 import React, {FunctionComponent} from "react";
 import "./styles.scss"
-import {Line, LineType, column_sides} from "./Line";
+import {Line, column_sides} from "./Line";
 
 type ColumnProps = {
     side: column_sides
-    line1?: LineType,
-    line2?: LineType,
-    line3?: LineType,
-    line4?: LineType,
-    line5?: LineType,
-    line6?: LineType,
+    line1?: JSX.Element,
+    line2?: JSX.Element,
+    line3?: JSX.Element,
+    line4?: JSX.Element,
+    line5?: JSX.Element,
+    line6?: JSX.Element,
 }
 
 const defaultProps: ColumnProps = {
     side: column_sides.Center
 }
 
-const Column: FunctionComponent<ColumnProps> = (
+const Column: React.FC<ColumnProps> = (
     {
         line1,
         line2,

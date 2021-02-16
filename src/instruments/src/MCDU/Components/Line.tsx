@@ -1,6 +1,4 @@
-import {Label, LabelProps} from "./Label";
-import {Field, FieldProps} from "./Field";
-import React, {FunctionComponent} from "react";
+import React from "react";
 
 enum column_sides {
     Left = "align-left",
@@ -8,24 +6,17 @@ enum column_sides {
     Right = "align-right"
 }
 
-
-type LineType = {
-    label?: LabelProps,
-    field?: FieldProps,
-}
-
 type LineProps = {
     side: column_sides,
-    line?: LineType
+    line?: JSX.Element,
 }
 
-const Line: FunctionComponent<LineProps> = ({line, side}) => {
+const Line: React.FC<LineProps> = ({line, side}) => {
     return (
         <div className={side}>
-            <Label text={line?.label?.text} color={line?.label?.color} side={line?.label?.side}/>
-            <Field text={line?.field?.text} color={line?.field?.color}/>
+            {line}
         </div>
     )
 }
 
-export {Line, LineType, column_sides};
+export {Line, column_sides, LineProps};

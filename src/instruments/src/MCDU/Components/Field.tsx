@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from "react";
+import React from "react";
 import "./styles.scss"
 
 type FieldProps = {
@@ -11,7 +11,7 @@ const defaultProps: FieldProps = {
     color: "white"
 }
 
-const Field: FunctionComponent<FieldProps> = ({text, color}) => (
+const Field: React.FC<FieldProps> = ({text, color}) => (
     <p>
         <span className={color}>{text}</span>
     </p>
