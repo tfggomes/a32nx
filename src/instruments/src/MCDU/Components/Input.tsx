@@ -1,6 +1,7 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from "react";
 import { RootContext } from "../RootContext.jsx";
 import { useInteractionEvent } from "../../Common/hooks";
+import "./styles.scss";
 
 export type NumberInputProps = {
     color?: string
@@ -45,16 +46,18 @@ NumberInput.defaultProps = defaultNumberInputProps
 
 export type InputProps = {
     color?: string
-    value?: any
+    value?: any,
+    size?: string
 }
 
-const DefaultInputProps = {
-    color: "white"
+export const DefaultInputProps = {
+    color: "white",
+    size: ""
 }
 
-export const Input : FunctionComponent<InputProps> = ({color, value}) => {
+export const Input : FunctionComponent<InputProps> = ({color, value, size}) => {
     return (
-        <p>
+        <p className={size}>
             <span className={color}>{value}</span>
         </p>
     )

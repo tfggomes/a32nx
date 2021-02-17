@@ -1,15 +1,15 @@
-import React, {FunctionComponent} from "react";
+import React from "react";
 import "./styles.scss"
 import {Line, column_sides} from "./Line";
 
 type ColumnProps = {
     side: column_sides
-    line1?: JSX.Element,
-    line2?: JSX.Element,
-    line3?: JSX.Element,
-    line4?: JSX.Element,
-    line5?: JSX.Element,
-    line6?: JSX.Element,
+    line1?: React.ReactElement,
+    line2?: React.ReactElement,
+    line3?: React.ReactElement,
+    line4?: React.ReactElement,
+    line5?: React.ReactElement,
+    line6?: React.ReactElement,
 }
 
 const defaultProps: ColumnProps = {
@@ -27,7 +27,7 @@ const Column: React.FC<ColumnProps> = (
         side
     }) => {
     return (
-        <div className="column">
+        <div className="column-holder">
            <Line side={side} line={line1}/>
            <Line side={side} line={line2}/>
            <Line side={side} line={line3}/>
