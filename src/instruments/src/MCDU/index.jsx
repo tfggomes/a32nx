@@ -41,7 +41,9 @@ function Idle() {
             <RootContext.Provider value={[scratchpad, setScratchpad, title, setTitle]}>
                 <div className="mcdu-inner">
                     <Titlebar />
-                    <PagesContainer />
+                    <div className="mcdu-content">
+                        <PagesContainer />
+                    </div>
                     <Scratchpad />
                 </div>
             </RootContext.Provider>

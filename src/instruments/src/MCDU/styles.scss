@@ -45,9 +45,10 @@
 }
 
 .mcdu-outer {
-  display: grid;
-  place-items: stretch;
-  max-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   background: radial-gradient(
       ellipse at center,
@@ -56,13 +57,24 @@
 }
 
 .mcdu-inner {
-  margin-left: 40px;
-  margin-top: 10px;
-  max-height: 960px;
+  //margin-left: -10px;
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-right: 20px;
+  max-height: 980px;
+  min-height: 980px;
   max-width: 945px;
-  padding-left: 10px;
-  padding-right: 10px;
+  min-width: 945px;
 
   display: flex;
   flex-direction: column;
+}
+
+.mcdu-content {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+
+  flex-grow: 1;
 }

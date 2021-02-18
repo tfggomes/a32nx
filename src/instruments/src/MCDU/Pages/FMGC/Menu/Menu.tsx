@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Column, column_sides} from "../../../Components/Column";
+import {Column} from "../../../Components/Column";
 import {RootContext} from "../../../RootContext.jsx"
 import "../../../Components/styles.scss"
-import {label_sides} from "../../../Components/Label";
 import {useInteractionEvent} from "../../../../Common/hooks";
-import {colors, FieldAndLabel, FieldOnly} from "../../../Components/Inputs";
+import {LineHolder} from "../../../Components/Lines/LineHolder";
+import {LineOnly} from "../../../Components/Lines/LineOnly";
+import {lineColors, lineSides} from "../../../Components/Lines/Line";
+import {LabelAndLine} from "../../../Components/Lines/LabelAndLine";
 
 type MenuProps = {
     setPage: React.Dispatch<React.SetStateAction<string>>
@@ -13,11 +15,6 @@ type MenuProps = {
 const MenuPage: React.FC<MenuProps> = ({setPage}) => {
     const [activeSys, setActiveSys] = useState("FMGC"); // Placeholder till FMGS in place
     const [selected, setSelected] = useState(false);
-    const [FMGCText, setFMGCText] = useState("<FMGC (REQ)")
-    const [FMGCColor, setFMGCColor] = useState("");
-    const [ATSUColor, setATSUColor] = useState("");
-    const [AIDSColor, setAIDSColor] = useState("");
-    const [CFDSColor, setCFDSColor] = useState("");
     const [, , , setTitle] = useContext(RootContext);
 
     useInteractionEvent("A32NX_MCDU_L_L1_BUTTON_PRESSED", () => {
@@ -41,47 +38,64 @@ const MenuPage: React.FC<MenuProps> = ({setPage}) => {
         setTitle("MCDU MENU")
     }, []);
 
-    useEffect(() => {
-        setFMGCColor(activeSys === "FMGC" ? colors.GREEN : colors.WHITE);
-        setATSUColor(activeSys === "ATSU" ? colors.GREEN : colors.WHITE);
-        setAIDSColor(activeSys === "AIDS" ? colors.GREEN : colors.WHITE);
-        setCFDSColor(activeSys === "CFDS" ? colors.GREEN : colors.WHITE);
-
-        if (selected) {
-            switch(activeSys) {
-                case "FMGC":
-                    setFMGCText("<FMGC (SEL)");
-                    setFMGCColor(colors.CYAN);
-                    setTimeout(() => {
-                        setPage("IDENT");
-                    }, 300);
-                    break;
-                case "ATSU":
-                    break;
-                case "AIDS":
-                    break;
-                case "CFDS":
-                    break;
-            }
+    function determineColor(system) {
+        if (activeSys == system) {
+            return lineColors.green
+        } else {
+            return lineColors.white
         }
-    }, [activeSys, selected]);
+    }
+
+    function determineText(system) {
+        if (activeSys == system) {
+            if (selected) {
+                return `<${system} (SEL)`
+            } else {
+                return system === "FMGC" ? `<FMGC (REQ)` : `<${system}`;
+            }
+        } else {
+            return system === "FMGC" ? `<FMGC (REQ)` : `<${system}`
+        }
+    }
 
     return (
-        <div className="two-columns" >
-            <Column
-                side={column_sides.Left}
-                line1={<FieldOnly value={FMGCText} color={FMGCColor} />}
-                line2={<FieldOnly value={"<ATSU"} color={ATSUColor} />}
-                line3={<FieldOnly value={"<AIDS"} color={AIDSColor} />}
-                line4={<FieldOnly value={"<CFDS"} color={CFDSColor} />}
-            />
-            <Column
-                side={column_sides.Right}
-                line1={<FieldAndLabel  fieldValue={"NAV B/UP>"} labelValue={"SELECT\xa0"} side={label_sides.Right} />}
-                line5={<FieldOnly value={"OPTIONS>"} />}
-                line6={<FieldOnly value={"RETURN>"} />}
-            />
-        </div>
+        <>
+            <Column> //TODO find a way to insert
+                <LineHolder>
+                    <LineOnly value={determineText("FMGC")} color={determineColor("FMGC")} />
+                </LineHolder>
+                <LineHolder>
+                    <LineOnly value={determineText("ATSU")} color={determineColor("ATSU")} />
+                </LineHolder>
+                <LineHolder>
+                    <LineOnly value={determineText("AIDS")} color={determineColor("ATSU")} />
+                </LineHolder>
+                <LineHolder>
+                    <LineOnly value={determineText("CFDS")} color={determineColor("CFDS")} />
+                </LineHolder>
+                <LineHolder />
+                <LineHolder />
+            </Column>
+            <Column>
+                <LineHolder>
+                    <LabelAndLine
+                        labelValue={"SELECT\xa0"}
+                        lineValue={"NAV B/UP>"}
+                        labelSide={lineSides.right}
+                        lineSide={lineSides.right}
+                    />
+                </LineHolder>
+                <LineHolder />
+                <LineHolder />
+                <LineHolder />
+                <LineHolder>
+                    <LineOnly value={"OPTIONS>"} side={lineSides.right}/>
+                </LineHolder>
+                <LineHolder>
+                    <LineOnly value={"RETURN>"} side={lineSides.right} />
+                </LineHolder>
+            </Column>
+        </>
     )
 }
 

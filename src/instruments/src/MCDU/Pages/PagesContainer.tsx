@@ -19,13 +19,11 @@ import React, { useState } from 'react';
 import { InitPage } from './FMGC/Init.jsx';
 import MenuPage from './FMGC/Menu/Menu';
 import { useInteractionEvent } from "../../Common/hooks";
-import IdentPage from "./FMGC/Ident/Ident";
 
 const PagesContainer = () => {
     const [currentPage, setCurrentPage] = useState('MENU');
     const pages = {
         INIT: <InitPage />,
-        IDENT: <IdentPage />,
         MENU: <MenuPage setPage={setCurrentPage}/>,
     };
 

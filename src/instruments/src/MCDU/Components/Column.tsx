@@ -1,43 +1,39 @@
-import React from "react";
-import "./styles.scss"
-import {Line, column_sides} from "./Line";
+import React, {ReactElement, useEffect, useState} from "react";
+import "./styles.scss";
+import {LineHolder, LineHolderProps} from "./Lines/LineHolder";
 
 type ColumnProps = {
-    side: column_sides
-    line1?: React.ReactElement,
-    line2?: React.ReactElement,
-    line3?: React.ReactElement,
-    line4?: React.ReactElement,
-    line5?: React.ReactElement,
-    line6?: React.ReactElement,
+    side?: string,
+    children?: React.FC<LineHolderProps>
 }
 
 const defaultProps: ColumnProps = {
-    side: column_sides.Center
+    side: "column-left"
 }
 
-const Column: React.FC<ColumnProps> = (
-    {
-        line1,
-        line2,
-        line3,
-        line4,
-        line5,
-        line6,
-        side
-    }) => {
+const   Column: React.FC<ColumnProps> = ({side, children}) => {
+    const [contents, setContents] = useState(<></>);
+
+    //TODO finish this
+    let test = (React.Children.map(children, (child) => {
+        let currentIndex = 0;
+        if (React.isValidElement(child)) {
+            let {index} = child.props;
+            index = currentIndex;
+        }
+    }))
+    useEffect(() => {
+        setContents(React.Children.map(children, (child) => {
+
+        }));
+    }, [children]);
     return (
-        <div className="column-holder">
-           <Line side={side} line={line1}/>
-           <Line side={side} line={line2}/>
-           <Line side={side} line={line3}/>
-           <Line side={side} line={line4}/>
-           <Line side={side} line={line5}/>
-           <Line side={side} line={line6}/>
+        <div className={`column-holder ${side}`}>
+            {children}
         </div>
     )
 }
 
 Column.defaultProps = defaultProps
 
-export {Column, column_sides};
+export {Column};

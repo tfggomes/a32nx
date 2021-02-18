@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import './styles.scss';
+import '../Components/styles.scss';
 import { useContext } from 'react';
 import { RootContext } from '../RootContext.jsx';
 
@@ -23,7 +24,8 @@ const Scratchpad = () => {
     const [scratchpad] = useContext(RootContext);
     return (
         <div className="scratchpad">
-            <p>{scratchpad}</p>
+            <p className="scratchpad-input">{scratchpad}</p>
+            <p className="scratchpad-arrow line-right">{'{}'}</p>
         </div>
     );
 };
